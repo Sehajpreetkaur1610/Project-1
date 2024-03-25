@@ -48,6 +48,19 @@ public class Player {
         return score;
     }
 
+    // Multiplicity annotation to show association with Deck class (1 to 1)
+    // Each player interacts with one deck
+    public void interactWithDeck(Deck deck) {
+        Card drawnCard = deck.drawCard();
+        if (drawnCard != null) {
+            hand.add(drawnCard);
+            System.out.println(name + " drew a card: " + drawnCard);
+        } else {
+            System.out.println("The deck is empty.");
+        }
+    }
+
+    // Method for splitting the hand if needed
     public void splitHand() {
         // Implement split logic here if needed
         // This method can be used to handle splitting the hand into two separate hands

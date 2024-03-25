@@ -37,4 +37,12 @@ public class Deck {
     public int size() {
         return cards.size();
     }
+
+    // Multiplicity annotation to show association with Player class (1 to *)
+    // Each deck can interact with multiple players
+    public void interactWithPlayers(List<Player> players) {
+        for (Player player : players) {
+            player.interactWithDeck(this); // Player interacts with this deck
+        }
+    }
 }
