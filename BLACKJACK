@@ -1,0 +1,22 @@
+run:
+Welcome to Blackjack!
+Enter your name:
+sehaj
+Welcome, sehaj!
+Your hand: [3 of Clubs, 4 of Diamonds]
+Dealer's hand: King of Diamonds and [Hidden Card]
+
+Do you want to hit, stand, double down, or split? (h/s/d/sp)
+h
+Your hand: [3 of Clubs, 4 of Diamonds, Ace of Spades]
+
+Do you want to hit, stand, double down, or split? (h/s/d/sp)
+sp
+Split!
+Your hands: [3 of Clubs, 4 of Diamonds, Ace of Spades]
+
+Your hand: [3 of Clubs, 4 of Diamonds, Ace of Spades] (Score: 18)
+Dealer's hand: [King of Diamonds, 5 of Clubs, 4 of Clubs] (Score: 19)
+Dealer wins.
+
+Do you want to play another round? (yes/no)

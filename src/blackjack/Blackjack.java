@@ -4,15 +4,21 @@ import java.util.Scanner;
 
 public class Blackjack {
     private final Deck deck;
-    private final Player player;
+    private Player player;
     private final Player dealer;
     private final Scanner scanner;
 
     public Blackjack() {
         deck = new Deck();
-        player = new Player("Player");
         dealer = new Player("Dealer");
         scanner = new Scanner(System.in);
+    }
+
+    public void askPlayerName() {
+        System.out.println("Enter your name:");
+        String playerName = scanner.nextLine();
+        player = new Player(playerName);
+        System.out.println("Welcome, " + playerName + "!");
     }
 
     public void dealInitialCards() {
@@ -23,23 +29,24 @@ public class Blackjack {
     }
 
     public void playGame() {
+        System.out.println("Welcome to Blackjack!");
+
+        askPlayerName(); // Ask for player's name
+
         try (scanner) {
-            System.out.println("Welcome to Blackjack!");
-            
             while (true) {
                 deck.shuffle();
                 player.clearHand();
                 dealer.clearHand();
-                
+
                 dealInitialCards();
-                
-                // Show player's hand and one card of the dealer
+
                 System.out.println("Your hand: " + player.getHand());
                 System.out.println("Dealer's hand: " + dealer.getHand().get(0) + " and [Hidden Card]");
-                
+
                 OUTER:
                 while (true) {
-                    System.out.println("\nDo you want to hit or stand? (h/s)");
+                    System.out.println("\nDo you want to hit, stand, double down, or split? (h/s/d/sp)");
                     String choice = scanner.nextLine().toLowerCase();
                     switch (choice) {
                         case "h" -> {
@@ -53,27 +60,37 @@ public class Blackjack {
                         case "s" -> {
                             break OUTER;
                         }
-                        default -> System.out.println("Invalid choice. Please enter 'h' or 's'.");
+                        case "d" -> {
+                            // Implement double down logic
+                            System.out.println("Double down!");
+                            player.addCard(deck.drawCard());
+                            break OUTER;
+                        }
+                        case "sp" -> {
+                            // Implement split logic
+                            System.out.println("Split!");
+                            player.splitHand();
+                            System.out.println("Your hands: " + player.getHand());
+                            break OUTER;
+                        }
+                        default -> System.out.println("Invalid choice. Please enter 'h', 's', 'd', or 'sp'.");
                     }
                 }
-                
-                // Dealer's turn
+
                 while (dealer.calculateScore() < 17) {
                     dealer.addCard(deck.drawCard());
                 }
-                
-                // Show final hands
+
                 System.out.println("\nYour hand: " + player.getHand() + " (Score: " + player.calculateScore() + ")");
                 System.out.println("Dealer's hand: " + dealer.getHand() + " (Score: " + dealer.calculateScore() + ")");
-                
-                // Determine the winner
+
                 determineWinner();
-                
+
                 System.out.println("\nDo you want to play another round? (yes/no)");
                 String input = scanner.nextLine().toLowerCase();
-                
+
                 if (!input.equals("yes")) {
-                    System.out.println("Goodbye! Thanks for playing.");
+                    System.out.println("Goodbye! Thanks for playing, " + player.getName() + ".");
                     break;
                 }
             }
@@ -98,8 +115,7 @@ public class Blackjack {
     }
 
     public static void main(String[] args) {
-        Blackjack blackjackGame;
-        blackjackGame = new Blackjack();
+        Blackjack blackjackGame = new Blackjack();
         blackjackGame.playGame();
     }
 }

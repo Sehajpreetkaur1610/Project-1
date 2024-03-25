@@ -47,4 +47,9 @@ public class Player {
 
         return score;
     }
+
+    public void splitHand() {
+        // Implement split logic here if needed
+        // This method can be used to handle splitting the hand into two separate hands
+    }
 }
