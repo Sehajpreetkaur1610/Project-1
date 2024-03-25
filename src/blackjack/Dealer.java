@@ -4,11 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Dealer {
+    private final String name;
     private final List<Card> hand;
-    // Reference to the Player class
+    private Player player; // Reference to the Player class
 
-    public Dealer() {
+    public Dealer(String name) {
+        this.name = name;
         this.hand = new ArrayList<>();
+    }
+
+    public String getName() {
+        return name;
     }
 
     public List<Card> getHand() {
@@ -16,6 +22,7 @@ public class Dealer {
     }
 
     public void setPlayer(Player player) {
+        this.player = player;
     }
 
     public void addCard(Card card) {

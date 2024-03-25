@@ -6,6 +6,7 @@ import java.util.List;
 public class Player {
     private final String name;
     private final List<Card> hand;
+    private Dealer dealer; // Reference to the Dealer class
 
     public Player(String name) {
         this.name = name;
@@ -18,6 +19,10 @@ public class Player {
 
     public List<Card> getHand() {
         return hand;
+    }
+
+    public void setDealer(Dealer dealer) {
+        this.dealer = dealer;
     }
 
     public void addCard(Card card) {
@@ -48,21 +53,18 @@ public class Player {
         return score;
     }
 
-    // Multiplicity annotation to show association with Deck class (1 to 1)
-    // Each player interacts with one deck
-    public void interactWithDeck(Deck deck) {
-        Card drawnCard = deck.drawCard();
-        if (drawnCard != null) {
-            hand.add(drawnCard);
-            System.out.println(name + " drew a card: " + drawnCard);
-        } else {
-            System.out.println("The deck is empty.");
+    public void performActionBasedOnDealerScore() {
+        if (dealer != null) {
+            // Implement logic based on dealer's score, such as player's actions
+            
         }
     }
 
-    // Method for splitting the hand if needed
-    public void splitHand() {
-        // Implement split logic here if needed
-        // This method can be used to handle splitting the hand into two separate hands
+    void interactWithDeck(Deck aThis) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    void splitHand() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
