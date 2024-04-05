@@ -8,8 +8,8 @@ public class Dealer {
     private final List<Card> hand;
     private Player player; // Reference to the Player class
 
-    public Dealer(String name) {
-        this.name = name;
+    public Dealer() {
+        this.name = "Dealer";
         this.hand = new ArrayList<>();
     }
 
@@ -55,6 +55,5 @@ public class Dealer {
 
     public void performActionBasedOnPlayerScore() {
         // Implement logic based on player's score, such as hitting or standing
-        
     }
 }

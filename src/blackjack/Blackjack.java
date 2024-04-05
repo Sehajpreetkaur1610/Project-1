@@ -4,28 +4,16 @@ import java.util.Scanner;
 
 public class Blackjack {
     private final Deck deck;
-    private Player player;
-    private final Player dealer;
+    private final Player player;
+    private final Dealer dealer;
     private final Scanner scanner;
+    private static final int MAX_ROUNDS = 10; // Maximum number of rounds
 
-    public Blackjack() {
-        deck = new Deck();
-        dealer = new Player("Dealer");
-        scanner = new Scanner(System.in);
-    }
-
-    public void askPlayerName() {
-        System.out.println("Enter your name:");
-        String playerName = scanner.nextLine();
-        player = new Player(playerName);
-        System.out.println("Welcome, " + playerName + "!");
-    }
-
-    public void dealInitialCards() {
-        player.addCard(deck.drawCard());
-        dealer.addCard(deck.drawCard());
-        player.addCard(deck.drawCard());
-        dealer.addCard(deck.drawCard());
+    public Blackjack(Deck deck, Player player, Dealer dealer, Scanner scanner) {
+        this.deck = deck;
+        this.player = player;
+        this.dealer = dealer;
+        this.scanner = scanner;
     }
 
     public void playGame() {
@@ -33,8 +21,10 @@ public class Blackjack {
 
         askPlayerName(); // Ask for player's name
 
-        try (scanner) {
-            while (true) {
+        try (Scanner scanner = new Scanner(System.in)) { // Closing scanner resource properly
+            int round = 0; // Track the number of rounds played
+            while (round < MAX_ROUNDS) { // Limit the number of rounds to prevent infinite loop
+                round++; // Increment round counter
                 deck.shuffle();
                 player.clearHand();
                 dealer.clearHand();
@@ -50,41 +40,52 @@ public class Blackjack {
                     String choice = scanner.nextLine().toLowerCase();
                     switch (choice) {
                         case "h" -> {
-                            player.addCard(deck.drawCard());
+                            player.addCardToHand(deck.drawCard());
                             System.out.println("Your hand: " + player.getHand());
                             if (player.calculateScore() > 21) {
                                 System.out.println("Bust! Your score is over 21.");
-                                break OUTER;
+                                determineWinner(); // Determine winner when player busts
+                                break OUTER; // Break out of the outer loop if the player busts
                             }
                         }
                         case "s" -> {
-                            break OUTER;
+                            break OUTER; // Break out of the outer loop if the player stands
                         }
                         case "d" -> {
                             // Implement double down logic
                             System.out.println("Double down!");
-                            player.addCard(deck.drawCard());
-                            break OUTER;
+                            player.addCardToHand(deck.drawCard());
+                            if (player.calculateScore() > 21) {
+                                System.out.println("Bust! Your score is over 21.");
+                                determineWinner(); // Determine winner when player busts
+                                break OUTER; // Break out of the outer loop if the player busts
+                            }
+                            break; // Continue the game after doubling down
                         }
                         case "sp" -> {
                             // Implement split logic
                             System.out.println("Split!");
                             player.splitHand();
                             System.out.println("Your hands: " + player.getHand());
-                            break OUTER;
+                            break OUTER; // Break out of the outer loop after splitting
                         }
-                        default -> System.out.println("Invalid choice. Please enter 'h', 's', 'd', or 'sp'.");
+                        default -> {
+                            System.out.println("Invalid choice. Please enter 'h', 's', 'd', or 'sp'.");
+                            continue; // Continue to the next iteration if the choice is invalid
+                        }
                     }
                 }
 
-                while (dealer.calculateScore() < 17) {
-                    dealer.addCard(deck.drawCard());
+                if (player.calculateScore() <= 21) { // Ensure player score is valid before continuing
+                    while (dealer.calculateScore() < 17) {
+                        dealer.addCard(deck.drawCard());
+                    }
+
+                    System.out.println("\nYour hand: " + player.getHand() + " (Score: " + player.calculateScore() + ")");
+                    System.out.println("Dealer's hand: " + dealer.getHand() + " (Score: " + dealer.calculateScore() + ")");
+
+                    determineWinner(); // Determine winner after both player and dealer actions
                 }
-
-                System.out.println("\nYour hand: " + player.getHand() + " (Score: " + player.calculateScore() + ")");
-                System.out.println("Dealer's hand: " + dealer.getHand() + " (Score: " + dealer.calculateScore() + ")");
-
-                determineWinner();
 
                 System.out.println("\nDo you want to play another round? (yes/no)");
                 String input = scanner.nextLine().toLowerCase();
@@ -95,6 +96,20 @@ public class Blackjack {
                 }
             }
         }
+    }
+
+    private void askPlayerName() {
+        System.out.println("Enter your name:");
+        String playerName = scanner.nextLine();
+        player.setName(playerName);
+        System.out.println("Welcome, " + playerName + "!");
+    }
+
+    private void dealInitialCards() {
+        player.addCardToHand(deck.drawCard());
+        dealer.addCard(deck.drawCard());
+        player.addCardToHand(deck.drawCard());
+        dealer.addCard(deck.drawCard());
     }
 
     private void determineWinner() {
@@ -115,7 +130,12 @@ public class Blackjack {
     }
 
     public static void main(String[] args) {
-        Blackjack blackjackGame = new Blackjack();
+        Deck deck = new Deck();
+        Player player = new Player();
+        Dealer dealer = new Dealer();
+        Scanner scanner = new Scanner(System.in);
+
+        Blackjack blackjackGame = new Blackjack(deck, player, dealer, scanner);
         blackjackGame.playGame();
     }
 }

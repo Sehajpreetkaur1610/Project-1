@@ -4,12 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-    private final String name;
-    private final List<Card> hand;
-    private Dealer dealer; // Reference to the Dealer class
+    private String name;
+    private List<Card> hand;
 
-    public Player(String name) {
-        this.name = name;
+    public Player() {
         this.hand = new ArrayList<>();
     }
 
@@ -17,15 +15,15 @@ public class Player {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public List<Card> getHand() {
         return hand;
     }
 
-    public void setDealer(Dealer dealer) {
-        this.dealer = dealer;
-    }
-
-    public void addCard(Card card) {
+    public void addCardToHand(Card card) {
         hand.add(card);
     }
 
@@ -53,18 +51,17 @@ public class Player {
         return score;
     }
 
-    public void performActionBasedOnDealerScore() {
-        if (dealer != null) {
-            // Implement logic based on dealer's score, such as player's actions
-            
+    public void splitHand() {
+        if (hand.size() != 2 || !hand.get(0).equals(hand.get(1))) {
+            System.out.println("Cannot split hand.");
+            return;
         }
-    }
-
-    void interactWithDeck(Deck aThis) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    void splitHand() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        
+        Card secondCard = hand.remove(1); // Remove the second card from the hand
+        List<Card> newHand = new ArrayList<>(); // Create a new hand with the second card
+        newHand.add(secondCard);
+        // Assuming you have a method to create a new Player with a given hand
+        // You need to replace this line with your actual implementation
+        // player.add(new Player(newHand)); 
     }
 }
